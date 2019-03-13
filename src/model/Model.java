@@ -1,26 +1,77 @@
 package model;
 
 import model.entity.*;
+import model.randoms.PlaneRegistrationCodesGenerator;
+import model.randoms.PlanesGenerator;
+import model.randoms.RandomGenerator;
+import view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
 
-    public static List<AirPlane> airCompany = new ArrayList<>();
+    public static List<AirPlane> airAssets = new ArrayList<>();
 
     public void AviaCompanyCreation() {
-        //System.out.println("Start creating the company");
-        airCompany.add(new AirPlane("Cessna A240", 150, 1500, 500, 306));
-        airCompany.add(new AirPlane("Cessna A40", 10, 100, 450, 305));
-        airCompany.add(new AirPlane("Cessna A24", 15, 150, 400, 40));
-        airCompany.add(new AirPlane("Cessna A20", 50, 100, 40, 340));
-        //System.out.println("Creating the company completed");
+        String registrationCode;
+        PlanesGenerator planesGenerator = new PlanesGenerator();
 
+        View.AirplaneParkDescriptionPrinter(AirPlanesData.values().length);
+        View.CompanyCreatedMessagePrinter(planesGenerator.getNumberOfPlanes());
 
+        PlaneRegistrationCodesGenerator planeRegistrationCodes = new PlaneRegistrationCodesGenerator(planesGenerator.getNumberOfPlanes());
+
+        String AirPark[] = new String[planesGenerator.getNumberOfPlanes()];
+
+        for(int i = 0; i < planesGenerator.getNumberOfPlanes(); i++) {
+            RandomGenerator rnd = new RandomGenerator(AirPlanesData.values().length);
+            AirPark[i] = String.valueOf(AirPlanesData.values()[rnd.getRnd()-1]);
+
+            registrationCode = "UR" + planeRegistrationCodes.getRegistrationNumber()[i];
+
+            if(AirPark[i].startsWith("BOEING")) {
+                airAssets.add(new Boeing(
+                        AirPlanesData.valueOf(AirPark[i]).getModel(),
+                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
+                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
+                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
+                        registrationCode));
+
+            } else if (AirPark[i].startsWith("AIRBUS")) {
+                airAssets.add(new Airbus(
+                        AirPlanesData.valueOf(AirPark[i]).getModel(),
+                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
+                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
+                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
+                        registrationCode));
+
+            } else if (AirPark[i].startsWith("AN")) {
+                airAssets.add(new Antonov(
+                        AirPlanesData.valueOf(AirPark[i]).getModel(),
+                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
+                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
+                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
+                        registrationCode));
+
+            } else if (AirPark[i].startsWith("CESSNA")) {
+                airAssets.add(new Cessna(
+                        AirPlanesData.valueOf(AirPark[i]).getModel(),
+                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
+                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
+                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
+                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
+                        registrationCode));
+            } else {
+                System.out.println("This is smth new in Enum :-)");
+            }
+        }
     }
 }
-
-
-
-
