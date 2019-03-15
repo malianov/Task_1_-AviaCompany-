@@ -1,35 +1,29 @@
 package controller;
 
 import model.Model;
-import model.entity.AirPlane;
+import model.entity.PlaneBase;
 import view.View;
+
+import static java.util.Comparator.comparing;
 
 public class Features {
 
     public int SumOfPassengersCalculation() {
         return Model.airAssets.stream()
-                .mapToInt(AirPlane::getPassengersCapacity)
+                .mapToInt(PlaneBase::getPassengersCapacity)
                 .sum();
     }
 
     public int SumOfCargoCalculation() {
         return Model.airAssets.stream()
-                .mapToInt(AirPlane::getCargoCapacity)
+                .mapToInt(PlaneBase::getCargoCapacity)
                 .sum();
-    }
-
-    public void SumOfPassengersPrinting(int sumOfPassengers) {
-        View.CommonPeopleCapacityPrinter(sumOfPassengers);
-    }
-
-    public void SumOfCargoPrinting(int sumOfCargoCapacity) {
-        View.CommonCargoCapacityPrinter(sumOfCargoCapacity);
     }
 
     public void FlyDistanceSorting() {
         View.SortirIncreasingDistancePrinter();
         Model.airAssets.stream()
-                .sorted((p1, p2) -> ((Double) p1.getMaxFlyDistance()).compareTo((Double) p2.getMaxFlyDistance()))
+                .sorted(comparing(PlaneBase::getMaxFlyDistance))
                 .forEach(System.out::println);
     }
 
@@ -39,8 +33,8 @@ public class Features {
 
         View.FuelPerKmConsumption(lowBoundary, highBoundary);
         Model.airAssets.stream()
-                .filter(x -> (x.fuelPerKilometerCalculation() > lowBoundary))
-                .filter(x -> (x.fuelPerKilometerCalculation() < highBoundary))
+                .filter(x -> (x.getFuelTankVolume()/x.getMaxFlyDistance() > lowBoundary))
+                .filter(x -> (x.getFuelTankVolume()/x.getMaxFlyDistance() < highBoundary))
                 .forEach(System.out::println);
     }
 }

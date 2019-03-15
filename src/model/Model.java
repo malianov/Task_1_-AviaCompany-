@@ -1,8 +1,13 @@
 package model;
 
-import model.entity.*;
-import model.randoms.PlaneRegistrationCodesGenerator;
-import model.randoms.PlanesGenerator;
+import model.entity.PlaneBase;
+import model.entity.database.AirPlanesDataCitizen;
+import model.entity.database.AirPlanesDataElite;
+import model.entity.database.AirPlanesDataLowCapacity;
+import model.entity.database.AirPlanesDataMilitary;
+import model.entity.hierarhy.AirCitizen;
+import model.randoms.PlanesNumberGenerator;
+import model.randoms.PlanesRegistrationCodesGenerator;
 import model.randoms.RandomGenerator;
 import view.View;
 
@@ -10,68 +15,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-
-    public static List<AirPlane> airAssets = new ArrayList<>();
+    public static List<PlaneBase> airAssets = new ArrayList<>();
 
     public void AviaCompanyCreation() {
-        String registrationCode;
-        PlanesGenerator planesGenerator = new PlanesGenerator();
+        PlanesNumberGenerator planesNumberGenerator = new PlanesNumberGenerator();
 
-        View.AirplaneParkDescriptionPrinter(AirPlanesData.values().length);
-        View.CompanyCreatedMessagePrinter(planesGenerator.getNumberOfPlanes());
+        PlanesRegistrationCodesGenerator planesRegistrationCodes = new PlanesRegistrationCodesGenerator(planesNumberGenerator.getNumberOfPlanes());
+        String AirPark[] = new String[planesNumberGenerator.getNumberOfPlanes()];
 
-        PlaneRegistrationCodesGenerator planeRegistrationCodes = new PlaneRegistrationCodesGenerator(planesGenerator.getNumberOfPlanes());
+        View.AirplaneParkDescriptionPrinter(AirPlanesDataCitizen.values().length
+            + AirPlanesDataElite.values().length
+            + AirPlanesDataLowCapacity.values().length
+            + AirPlanesDataMilitary.values().length);
 
-        String AirPark[] = new String[planesGenerator.getNumberOfPlanes()];
+        View.CompanyCreatedMessagePrinter(planesNumberGenerator.getNumberOfPlanes());
 
-        for(int i = 0; i < planesGenerator.getNumberOfPlanes(); i++) {
-            RandomGenerator rnd = new RandomGenerator(AirPlanesData.values().length);
-            AirPark[i] = String.valueOf(AirPlanesData.values()[rnd.getRnd()-1]);
+        for(int i = 0; i < planesNumberGenerator.getNumberOfPlanes(); i++) {
+            RandomGenerator rnd = new RandomGenerator(AirPlanesDataCitizen.values().length);
+            AirPark[i] = String.valueOf(AirPlanesDataCitizen.values()[rnd.getRnd()-1]);
 
-            registrationCode = "UR" + planeRegistrationCodes.getRegistrationNumber()[i];
+            airAssets.add(new AirCitizen(
+                        AirPlanesDataCitizen.valueOf(AirPark[i]).getModel(),
+                        AirPlanesDataCitizen.valueOf(AirPark[i]).getPassengersCapacity(),
+                        AirPlanesDataCitizen.valueOf(AirPark[i]).getCargoCapacity(),
+                        AirPlanesDataCitizen.valueOf(AirPark[i]).getMaxFlyDistance(),
+                        AirPlanesDataCitizen.valueOf(AirPark[i]).getFuelTankVolume(),
+                        AirPlanesDataCitizen.valueOf(AirPark[i]).getVendor(),
+                        "UR" + planesRegistrationCodes.getRegistrationNumber()[i]));
 
-            if(AirPark[i].startsWith("BOEING")) {
-                airAssets.add(new Boeing(
-                        AirPlanesData.valueOf(AirPark[i]).getModel(),
-                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
-                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
-                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
-                        registrationCode));
 
-            } else if (AirPark[i].startsWith("AIRBUS")) {
-                airAssets.add(new Airbus(
-                        AirPlanesData.valueOf(AirPark[i]).getModel(),
-                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
-                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
-                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
-                        registrationCode));
-
-            } else if (AirPark[i].startsWith("AN")) {
-                airAssets.add(new Antonov(
-                        AirPlanesData.valueOf(AirPark[i]).getModel(),
-                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
-                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
-                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
-                        registrationCode));
-
-            } else if (AirPark[i].startsWith("CESSNA")) {
-                airAssets.add(new Cessna(
-                        AirPlanesData.valueOf(AirPark[i]).getModel(),
-                        AirPlanesData.valueOf(AirPark[i]).getPassengersCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getCargoCapacity(),
-                        AirPlanesData.valueOf(AirPark[i]).getMaxFlyDistance(),
-                        AirPlanesData.valueOf(AirPark[i]).getFuelTankVolume(),
-                        AirPlanesData.valueOf(AirPark[i]).getVendor(),
-                        registrationCode));
-            } else {
-                System.out.println("This is smth new in Enum :-)");
-            }
         }
     }
 }
+
+
+
+
+
