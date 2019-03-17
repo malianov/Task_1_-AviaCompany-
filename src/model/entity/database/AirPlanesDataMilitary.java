@@ -2,7 +2,7 @@ package model.entity.database;
 
 public enum AirPlanesDataMilitary {
 
-    SU27     ("Suchoi", "CU-27",     2, 13000, 3680,  9600);
+    SU27 ("Suchoi","CU-27",2,13000,3680,  9600);
 
     private String vendor;
     private String model;

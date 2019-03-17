@@ -23,12 +23,12 @@ public class Model {
         PlanesRegistrationCodesGenerator planesRegistrationCodes = new PlanesRegistrationCodesGenerator(planesNumberGenerator.getNumberOfPlanes());
         String AirPark[] = new String[planesNumberGenerator.getNumberOfPlanes()];
 
-        View.AirplaneParkDescriptionPrinter(AirPlanesDataCitizen.values().length
+        View.airplaneParkDescriptionPrinter(AirPlanesDataCitizen.values().length
             + AirPlanesDataElite.values().length
             + AirPlanesDataLowCapacity.values().length
             + AirPlanesDataMilitary.values().length);
 
-        View.CompanyCreatedMessagePrinter(planesNumberGenerator.getNumberOfPlanes());
+        View.companyCreatedMessagePrinter(planesNumberGenerator.getNumberOfPlanes());
 
         for(int i = 0; i < planesNumberGenerator.getNumberOfPlanes(); i++) {
             RandomGenerator rnd = new RandomGenerator(AirPlanesDataCitizen.values().length);

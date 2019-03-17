@@ -15,9 +15,9 @@ public class Controller {
 
     public void process() {
         model.AviaCompanyCreation();
-        view.SumOfPassengersPrinting(controllerFeatures.SumOfPassengersCalculation());
-        view.SumOfCargoPrinting(controllerFeatures.SumOfCargoCalculation());
-        controllerFeatures.FlyDistanceSorting();
-        controllerFeatures.FuelTankConsumption();
+        view.sumOfPassengersPrinting(controllerFeatures.sumOfPassengersCalculation());
+        view.sumOfCargoPrinting(controllerFeatures.sumOfCargoCalculation());
+        controllerFeatures.flyDistanceSorting();
+        controllerFeatures.fuelTankConsumption();
     }
 }
